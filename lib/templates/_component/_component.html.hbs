@@ -1,18 +1,29 @@
 <div class="container-fluid">
-    {{{formName}}} Form
+    {{{formTitle}}} Form
     <div class="card">
         <div class="card-body">
             <form name="{{{formName}}}Form" role="form" novalidate (ngSubmit)="save()" [formGroup]="{{{formName}}}Form">
                 <div class="row">
-                    <div class="col">
-                        <label class="label" for="field_publisherName">Name</label>
-                        <input type="text" class="form-control form-control-box" name="publisherName"
-                               id="field_publisherName"
-                               formControlName="publisherName" required/>
-                    </div>
-                <button type="submit" [disabled]="isSaving || editForm.invalid" class="btn btn-primary">
-                    Save
-                </button>
+                    {{#each generatedFields}}
+                        <label class="label" for="field_{{this.fieldName}}">{{this.fieldTitle}}</label>
+                        {{#if_eq this.fieldType 'select' }}
+                            <div class="col-4">
+                                <select class="form-control" id="field_{{this.fieldName}}" name="{{this.fieldName}}"
+                                        formControlName="{{this.fieldName}}">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+                        {{else}}
+                            <div class="col-4">
+                                <input type="{{this.fieldType}}" class="form-control" name="{{this.fieldName}}"
+                                       id="field_{{this.fieldName}}"
+                                       formControlName="{{this.fieldName}}"/>
+                            </div>
+                        {{/if_eq}}
+                    {{/each}}
+                    <button type="submit" [disabled]="isSaving || editForm.invalid" class="btn btn-primary">
+                        Save
+                    </button>
             </form>
         </div>
     </div>
