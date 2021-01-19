@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {FormBuilder} from '@angular/forms';
 
 @Component({
@@ -7,3 +6,33 @@ import {FormBuilder} from '@angular/forms';
     templateUrl: './{{baseName}}-form.component.html',
     styleUrls: []
 })
+export class {{className}}Component implements OnInit {
+   isSaving = false;
+
+   {{formName}} = this.fb.group({
+{{#each generatedFields}}
+        {{this.fieldName}}: [],
+{{/each}}
+   });
+   constructor(private fb: FormBuilder) {}
+
+   ngOnInit() {}
+
+   previousState() {
+        window.history.back();
+   }
+
+   save() {
+       this.isSaving = true;
+       const {{formName}} = this.createFromForm();
+   }
+
+   createForm() {
+       return {
+{{#each generatedFields}}
+          {{this.fieldName}}: this.{{../formName}}.get('{{this.fieldName}}'),
+{{/each}}
+       };
+   }
+
+}
